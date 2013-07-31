@@ -27,17 +27,17 @@ class ReversePolishCalculator extends JavaTokenParsers with Maths {
    *  rep => This combinator says "expect zero or more repetitions of X"
    */
   def expr:   Parser[Float] = rep(term ~ operator) ^^ {
-    // match a list of terms
-    case ops => 
+    // match a list of term~operator
+    case terms => 
       // Each operand will be placed on the stack, and pairs will be popped off for each operation, 
       // replacing the pair with the result of the operation. Calculation ends when the final operator 
       // is applied to all remaining operands
       var stack  = List.empty[Float]
       // Remember the last operation performed, default to addition
       var lastOp: (Float, Float) => Float = add
-      ops.foreach(op =>
+      terms.foreach(t =>
         // match on the operator to perform the appropriate calculation
-        op match {
+        t match {
           // append the operands to the stack, and reduce the pair at the top using the current operator
           case nums ~ op => lastOp = op; stack = reduce(stack ++ nums, op)
         }
