@@ -11,7 +11,7 @@ object Builds extends Build {
   )
 
   lazy val app = Project(
-      "RPNCalculator", 
+      "Calculator", 
       file("."), 
       settings = buildSettings ++ assemblySettings
     ) settings(
