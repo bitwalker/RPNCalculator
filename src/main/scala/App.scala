@@ -4,10 +4,11 @@ import scala.util.parsing.combinator._
  * This trait provides the mathematical operations which the calculator can perform.
  */
 trait Maths {
-  def add(x: Float, y: Float) = x + y
-  def sub(x: Float, y: Float) = x - y
-  def mul(x: Float, y: Float) = x * y
-  def div(x: Float, y: Float) = if (y > 0) (x / y) else 0.0f
+  def add(x: Float, y: Float)   = x + y
+  def sub(x: Float, y: Float)   = x - y
+  def mul(x: Float, y: Float)   = x * y
+  def div(x: Float, y: Float)   = if (y > 0) (x / y) else 0.0f
+  def pow(x: Float, exp: Float) = math.pow(x, exp).toFloat
 }
 
 /**
@@ -52,11 +53,12 @@ class ReversePolishCalculator extends JavaTokenParsers with Maths {
   // Converts a floating point number as a String to Float
   def num: Parser[Float] = floatingPointNumber ^^ (_.toFloat)
   // Parses an operator and converts it to the underlying function it logically maps to
-  def operator: Parser[(Float, Float) => Float] = ("*" | "/" | "+" | "-") ^^ {
-    case "+" => add
-    case "-" => sub
-    case "*" => mul
-    case "/" => div
+  def operator: Parser[(Float, Float) => Float] = ("**" | "*" | "/" | "+" | "-") ^^ {
+    case "**" => pow
+    case "+"  => add
+    case "-"  => sub
+    case "*"  => mul
+    case "/"  => div
   }
 
   // Reduces a stack of numbers by popping the last pair off the stack, applying op, and pushing the result
